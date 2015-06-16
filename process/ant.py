@@ -14,7 +14,7 @@ class Ant:
         self.durationTravel = 0             #tempsTotal
         self.longTravel = 0                 #distanceTotal
         self.currPosition = firstPosition   #point courant
-        self.initialPostion = firstPosition #premiere position
+        self.initialPosition = firstPosition #premiere position
 
     #Fonction permettant d'initialiser la liste des lieux a visiter
     def initializeStillToVisit(self, firstPosition):
@@ -29,10 +29,14 @@ class Ant:
 
     #Fonction permettant la selection d'un noeud en fonction des phéromones
     def selectNode(self):
-        while True:
-            newPosition = randomPondereNoeud(self.currPosition)
-            if not(newPosition in self.visitedPlaces):
-                break
+        if len(self.placesStillToVisit) == 0 :
+            newPosition = self.initialPosition
+        else :
+            #while tru + break equivalent Do-While
+            while True:
+                newPosition = randomPondereNoeud(self.currPosition)
+                if not(newPosition in self.visitedPlaces):
+                    break
 
         return newPosition
 
