@@ -34,7 +34,7 @@ class Ant:
         if len(self.placesStillToVisit) == 0:
             newPosition = self.initialPosition
             self.endTravel = False
-        else :
+        else:
             #while true + break equivalent Do-While
             while True:
                 newPosition = randomPondereNoeud(self.currPosition, self.placesStillToVisit)
@@ -74,6 +74,7 @@ class Ant:
             self.placesStillToVisit.remove(newPosition)
 
     def generateTravel(self, timeToVisit):
+        i = 0
         while self.endTravel == False:
             self.goToNextPosition(timeToVisit)
 

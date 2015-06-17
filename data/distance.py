@@ -62,7 +62,6 @@ def getElementPondere(indice, value, elements):
 def randomPondereNoeud(indice, elements):
 
     randomNumber = random.random() * getValeursPonderees(indice, elements)
-
     #valeur a approcher : valeur pondérée totale moins par un nombre aléatoire
     #total pondéré
     pondereValue = getValeursPonderees(indice, elements)
@@ -71,8 +70,8 @@ def randomPondereNoeud(indice, elements):
 
 #Fonction permettant d'incrémenter les hormones à une places donnée
 def incrementHormones(indice, position):
-    distances[indice][position][1] += distances[indice][position][1]*0.3
-    distances[position][indice][1] += distances[position][indice][1]*0.3
+    distances[indice][position][1] += distances[indice][position][1]*0.002
+    distances[position][indice][1] += distances[position][indice][1]*0.002
 
 #Fonction permettant de d'écrémenter les hormones
 def decrementAll():
@@ -81,7 +80,7 @@ def decrementAll():
     while i < nbrPlaces:
         j = 0
         while j < nbrPlaces:
-            distances[i][j][1] -= distances[i][j][1]*0.1
+            distances[i][j][1] -= distances[i][j][1]*0.001
             j += 1
         i += 1
 
