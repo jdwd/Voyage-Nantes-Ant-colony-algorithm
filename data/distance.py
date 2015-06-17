@@ -41,7 +41,7 @@ def getValeursPonderees(indice):
     moyennePonderee = 0.0;
 
     for lieu in lieux:
-        moyennePonderee += (1*lieu[1])
+        moyennePonderee += (lieu[1])
 
     return moyennePonderee
 
@@ -49,7 +49,7 @@ def getElementPondere(indice, value):
     lieux = distances[indice]
     i = 0
     ponderation = 0.0
-    while i < len(lieux) and ponderation < value:
+    while i < len(lieux)-1 and ponderation < value:
         ponderation += lieux[i][1]
         i += 1
 
@@ -57,7 +57,7 @@ def getElementPondere(indice, value):
 
 def randomPondereNoeud(indice):
     #Nombre aléatoire entre 0 et len(palces)
-    randomNumber = int(random.random() * len(places))
+    randomNumber = int(random.random() * (len(places)-1))
     #total pondéré
     pondereValue = getValeursPonderees(indice)
     #valeur a approcher : valeur pondérée totale divisée par un nombre aléatoire
@@ -68,18 +68,36 @@ def randomPondereNoeud(indice):
 
     return getElementPondere(indice, valueToTouch)
 
-#Fonction permettant d'incrémenter les hormones à une places données
+#Fonction permettant d'incrémenter les hormones à une places donnée
 def incrementHormones(indice, position):
-    places[indice][position][1] += 0.3
+    distances[indice][position][1] += 0.3
 
 #Fonction permettant de d'écrémenter les hormones
 def decrementAll():
     nbrPlaces = len(places)
     i = 0
-    while i < len(places) :
+    while i < nbrPlaces:
         j = 0
-        while j < len(places):
-            places[i][j][1] -= 0.1
+        while j < nbrPlaces:
+            distances[i][j][1] -= 0.1
             j+=1
         i+=1
 
+#Fonction permettant de définir si la téléportation est plus rapide
+def isBetterWithTeleportation(origine, destination):
+    #la téléportation est plus intéressante si elle revient à rejoindre un point de destination plus rapidement qu'a pieds
+    return getTeleportationTime() < getWalkingTime(origine, destination)
+
+#récupération de la distance a parcourir en m
+def getDistanceToGo(origine, destination):
+    return distances[origine][destination][0]
+
+#récupération de du temps de marche
+def getWalkingTime(origine, destination):
+    distanceToGo = getDistanceToGo(origine, destination)
+    #5 km/h > 5*1000/60 mètres par min
+    return distanceToGo/(5*1000/60)
+
+#récupération du temps de téléportation
+def getTeleportationTime():
+    return 5

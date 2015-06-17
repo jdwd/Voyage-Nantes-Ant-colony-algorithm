@@ -8,7 +8,7 @@ from process import ant
 vitesseMax = 5
 tempsTeleportation = 5
 distanceMax = ((vitesseMax * 1000) / 60) * 5
-tempsVisite = 0
+timeToVisit = 0
 essaisMax = 1000000
 essaisRestants = essaisMax
 
@@ -32,11 +32,11 @@ def get_random_point():
 
 def nouvelle_etape(point):
     global tempsTotal
-    global tempsVisite
+    global timeToVisit
     global etapesRealisees
     etapesRealisees.append(point)
     if len(etapesRealisees) > 0:
-        tempsTotal += tempsVisite
+        tempsTotal += timeToVisit
 
 def calcul_temps_parcours(a, b):
     global distances
@@ -98,19 +98,19 @@ ant1 = ant.Ant()
 print("visitedPlaces "+str(ant1.visitedPlaces))
 print("CurrPosition "+str(ant1.currPosition))
 print("placesStillToVisit "+str(ant1.placesStillToVisit))
-
 i = 0
-while i<10:
-    print("next")
-    ant1.goToNextPosition()
+while len(ant1.placesStillToVisit) != 0:
+    i += 1
+    print(str(i))
+    ant1.goToNextPosition(timeToVisit)
     print("CurrPosition "+str(ant1.currPosition))
     print("visitedPlaces "+str(ant1.visitedPlaces))
     print("placesStillToVisit "+str(ant1.placesStillToVisit))
 
 
-while (tempsVisite < 15 or tempsVisite > 60) :
+while (timeToVisit < 15 or timeToVisit > 60) :
     try:
-        tempsVisite = int(raw_input('Entrez le temps pour chaque visite: '))
+        timeToVisit = int(raw_input('Entrez le temps pour chaque visite: '))
     except(ValueError, TypeError) as e:
         pass
 #tempsVisite = int(tempsVisite)
