@@ -25,12 +25,16 @@ def isShorter(currAnt):
 
 def hasBestValue(currAnt):
     #pourcentage d'évolution
-    deltaTime = (bestAnt.durationTravel - currAnt.durationTravel)/currAnt.durationTravel * 100
-    deltaLong = (bestAnt.longTravel - currAnt.longTravel)/currAnt.longTravel * 100
-    deltaTele = (bestAnt.nbrTeleportation - currAnt.nbrTeleportation)/currAnt.durationTravel * 100
+    deltaTime = (float(bestAnt.durationTravel) - float(currAnt.durationTravel))/float(currAnt.durationTravel) * 100.0
+    deltaLong = (float(bestAnt.longTravel) - float(currAnt.longTravel))/float(currAnt.longTravel) * 100.0
+    deltaTele = (float(bestAnt.nbrTeleportation) - float(currAnt.nbrTeleportation))/float(currAnt.durationTravel) * 100.0
+
+
+    if(bestAnt.durationTravel == 0 and bestAnt.longTravel == 0):
+        return True
 
     #si on constate une evolution globale des indicateurs, alors le rapport q/p est meilleur, sinon non
-    if (deltaLong+deltaTime+deltaTele) > 0:
+    if (deltaLong+deltaTime+deltaTele) > 0.0:
         return True
     else:
         return False
