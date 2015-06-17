@@ -39,7 +39,6 @@ class Ant:
             #while true + break equivalent Do-While
             while True:
                 newPosition = randomPondereNoeud(self.currPosition)
-                #print("4:"+str(newPosition))
                 if not(newPosition in self.visitedPlaces):
                     break
         return newPosition
