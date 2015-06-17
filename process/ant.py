@@ -31,14 +31,13 @@ class Ant:
 
     #Fonction permettant la selection d'un noeud en fonction des phéromones
     def selectNode(self):
-
         if len(self.placesStillToVisit) == 0:
             newPosition = self.initialPosition
             self.endTravel = False
         else :
             #while true + break equivalent Do-While
             while True:
-                newPosition = randomPondereNoeud(self.currPosition)
+                newPosition = randomPondereNoeud(self.currPosition, self.placesStillToVisit)
                 if not(newPosition in self.visitedPlaces):
                     break
         return newPosition
@@ -65,12 +64,13 @@ class Ant:
         incrementHormones(self.currPosition, newPosition)
 
         #actualisation des variable de positions
-        self.visitedPlaces.append(newPosition)
-        self.placesStillToVisit.remove(newPosition)
         self.currPosition = newPosition
+        self.visitedPlaces.append(newPosition)
 
         if(newPosition == self.initialPosition):
             self.endTravel = True
+        else:
+            self.placesStillToVisit.remove(newPosition)
 
     def generateTravel(self, timeToVisit):
         while self.endTravel == False:

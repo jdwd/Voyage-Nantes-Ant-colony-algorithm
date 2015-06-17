@@ -35,35 +35,38 @@ distances = [
     [[439, 1], [409, 1], [449, 1], [640, 1], [566, 1], [566, 1], [1640, 1], [1890, 1], [1800, 1], [1700, 1], [2420, 1], [2760, 1], [3070, 1], [2550, 1], [2180, 1], [2380, 1], [2260, 1], [2020, 1], [1840, 1], [1840, 1], [1640, 1], [1650, 1], [1490, 1], [1250, 1], [985, 1], [635, 1], [658, 1], [492, 1], [0, 1]]
 , 1]
 
-def getValeursPonderees(indice):
+def getValeursPonderees(indice, elements):
     "récupération de la moyenne suivant les pondérations d'hormones : utilisé pour la probabilité de choix de direction"
+    i = 0
     lieux = distances[indice]
-    moyennePonderee = 0.0;
+    moyennePonderee = 0.0
+    while i < len(elements):
+        j = sorted(elements)[i]
+        moyennePonderee += (lieux[j][1])
+        i += 1
 
-    for lieu in lieux:
-        moyennePonderee += (lieu[1])
     return moyennePonderee
 
-def getElementPondere(indice, value):
+def getElementPondere(indice, value, elements):
     lieux = distances[indice]
     i = 0
     ponderation = 0.0
-    while (i < len(lieux)-1) and (ponderation <= value):
-        ponderation += lieux[i][1]
+    while i < len(elements) and (ponderation < value):
+        j = sorted(elements)[i]
+        ponderation += lieux[j][1]
         i += 1
 
-    return i
+    return j
 
-def randomPondereNoeud(indice):
-    #Nombre aléatoire entre 0 et len(palces)
-    randomNumber =  random.randrange(0, len(places), 1)
+def randomPondereNoeud(indice, elements):
+
+    randomNumber =  random.randrange(0, getValeursPonderees(indice, elements), 1)
 
     #valeur a approcher : valeur pondérée totale moins par un nombre aléatoire
     #total pondéré
-    pondereValue = getValeursPonderees(indice)
+    pondereValue = getValeursPonderees(indice, elements)
     valueToTouch = pondereValue-randomNumber
-
-    return getElementPondere(indice, valueToTouch)
+    return getElementPondere(indice, valueToTouch, elements)
 
 #Fonction permettant d'incrémenter les hormones à une places donnée
 def incrementHormones(indice, position):
@@ -78,7 +81,6 @@ def decrementAll():
         j = 0
         while j < nbrPlaces:
             distances[i][j][1] -= distances[i][j][1]*0.1
-            print(str(distances[i][j][1]))
             j += 1
         i += 1
 
