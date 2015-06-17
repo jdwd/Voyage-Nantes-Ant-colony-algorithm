@@ -93,27 +93,15 @@ def envoyer_fourmis(teleportations, distances, temps, chemin):
 """ START  """
 """        """
 
-
-ant1 = ant.Ant()
-print("visitedPlaces "+str(ant1.visitedPlaces))
-print("CurrPosition "+str(ant1.currPosition))
-print("placesStillToVisit "+str(ant1.placesStillToVisit))
-i = 0
-while len(ant1.placesStillToVisit) != 0:
-    i += 1
-    print(str(i))
-    ant1.goToNextPosition(timeToVisit)
-    print("CurrPosition "+str(ant1.currPosition))
-    print("visitedPlaces "+str(ant1.visitedPlaces))
-    print("placesStillToVisit "+str(ant1.placesStillToVisit))
-
-
 while (timeToVisit < 15 or timeToVisit > 60) :
     try:
         timeToVisit = int(raw_input('Entrez le temps pour chaque visite: '))
     except(ValueError, TypeError) as e:
         pass
 #tempsVisite = int(tempsVisite)
+
+ant1 = ant.Ant()
+ant1.generateTravel(timeToVisit)
 
 flag = -1
 while flag < 0 or flag > 1:

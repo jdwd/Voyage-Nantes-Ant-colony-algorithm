@@ -17,6 +17,7 @@ class Ant:
         self.valueForMoney = 0                  #rapport qualité prix
         self.currPosition = firstPosition       #point courant
         self.initialPosition = firstPosition    #premiere position
+        self.endTravel = False                  #definit si la fourmi a fini son voyage
 
     #Fonction permettant d'initialiser la liste des lieux a visiter
     def initializeStillToVisit(self, firstPosition):
@@ -34,6 +35,7 @@ class Ant:
 
         if len(self.placesStillToVisit) == 0:
             newPosition = self.initialPosition
+            self.endTravel = False
         else :
             #while true + break equivalent Do-While
             while True:
@@ -70,6 +72,11 @@ class Ant:
         self.placesStillToVisit.remove(newPosition)
         self.currPosition = newPosition
 
-
+    def generateTravel(self, timeToVisit):
+        while len(self.placesStillToVisit) != 0:
+            self.goToNextPosition(timeToVisit)
+            print("CurrPosition "+str(self.currPosition))
+            print("visitedPlaces "+str(self.visitedPlaces))
+            print("placesStillToVisit "+str(self.placesStillToVisit))
 
 
