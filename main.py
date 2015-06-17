@@ -5,10 +5,10 @@ from data.place import places
 from process import ant
 
 timeToVisit = 0
-essaisMax = 1000000
+essaisMax = 10000 #1000000
 essaisRestants = essaisMax
 bestAnt = ant.Ant()
-arrets = ["Minimum de teleportations","Temps total minimum","Meilleur rapport qualite/prix"]
+arrets = ["Voyage le plus rapide","Voyage le plus court","Voyage avec le meilleur rapport qualite/prix"]
 
 
 def isFaster(currAnt):
@@ -56,13 +56,16 @@ fourmiNbr = 0
 while(essaisRestants > 0):
     anyAnt = ant.Ant()
     fourmiNbr += 1
-    essaisRestants -= 1
+    print("essais restants:"+str(essaisRestants))
     anyAnt.generateTravel(timeToVisit)
     print "Fourmi n°" + str(fourmiNbr)
+    essaisRestants -= 1
 
     if (flag is 0 and isFaster(anyAnt)) or (flag is 1 and isShorter(anyAnt)) or (flag is 2 and hasBestValue(anyAnt)):
         bestAnt = anyAnt
         essaisRestants = essaisMax
+        print("une meilleure fourmi est trouvée !")
+        bestAnt.display()
 
     #décrémente les hormones
     decrementAll()
