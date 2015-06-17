@@ -14,7 +14,6 @@ class Ant:
         self.durationTravel = 0                 #tempsTotal
         self.nbrTeleportation = 0               #nombre de téléportation <> cout
         self.longTravel = 0                     #distanceTotal
-        self.valueForMoney = 0                  #rapport qualité prix
         self.currPosition = firstPosition       #point courant
         self.initialPosition = firstPosition    #premiere position
         self.endTravel = False                  #definit si la fourmi a fini son voyage
@@ -64,7 +63,6 @@ class Ant:
         self.longTravel += getDistanceToGo(self.currPosition, newPosition)
 
         #hormones
-        #decrementAll()
         incrementHormones(self.currPosition, newPosition)
 
         #actualisation des variable de positions
@@ -72,8 +70,11 @@ class Ant:
         self.placesStillToVisit.remove(newPosition)
         self.currPosition = newPosition
 
+        if(newPosition == self.initialPosition):
+            self.endTravel = True
+
     def generateTravel(self, timeToVisit):
-        while len(self.placesStillToVisit) != 0:
+        while self.endTravel == False:
             self.goToNextPosition(timeToVisit)
             print("CurrPosition "+str(self.currPosition))
             print("visitedPlaces "+str(self.visitedPlaces))

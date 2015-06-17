@@ -70,7 +70,7 @@ def randomPondereNoeud(indice):
 
 #Fonction permettant d'incrémenter les hormones à une places donnée
 def incrementHormones(indice, position):
-    distances[indice][position][1] += 0.3
+    distances[indice][position][1] += distances[indice][position][1]*0.3
 
 #Fonction permettant de d'écrémenter les hormones
 def decrementAll():
@@ -79,9 +79,10 @@ def decrementAll():
     while i < nbrPlaces:
         j = 0
         while j < nbrPlaces:
-            distances[i][j][1] -= 0.1
-            j+=1
-        i+=1
+            distances[i][j][1] -= distances[i][j][1]*0.1
+            print(str(distances[i][j][1]))
+            j += 1
+        i += 1
 
 #Fonction permettant de définir si la téléportation est plus rapide
 def isBetterWithTeleportation(origine, destination):
