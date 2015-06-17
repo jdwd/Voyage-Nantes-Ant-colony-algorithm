@@ -4,94 +4,36 @@ from data.distance import *
 from data.place import places
 from process import ant
 
-
-vitesseMax = 5
-tempsTeleportation = 5
-distanceMax = ((vitesseMax * 1000) / 60) * 5
 timeToVisit = 0
 essaisMax = 1000000
 essaisRestants = essaisMax
-
-meilleurNombreTeleportations = -1
-meilleureDistance = 0
-meilleurTemps = -1
-meilleurChemin = []
-
+bestAnt = ant.Ant()
 arrets = ["Minimum de teleportations","Temps total minimum","Meilleur rapport qualite/prix"]
 
-def better_teleport(a, b):
-    return distances[a][b] > distanceMax
 
-def get_random_point():
-    global etapesRealisees
-    global places
-    choice = -1
-    while choice is -1 or choice in etapesRealisees:
-        choice = int(random.random() * len(places))
-    return choice
-
-def nouvelle_etape(point):
-    global tempsTotal
-    global timeToVisit
-    global etapesRealisees
-    etapesRealisees.append(point)
-    if len(etapesRealisees) > 0:
-        tempsTotal += timeToVisit
-
-def calcul_temps_parcours(a, b):
-    global distances
-    global vitesseMax
-    global tempsTeleportation
-    if better_teleport(a, b):
-        return tempsTeleportation
+def isFaster(currAnt):
+    if bestAnt.durationTravel == 0 or bestAnt.durationTravel > currAnt.durationTravel:
+        return True
     else:
-        return distances[a][b] / ((vitesseMax*1000)/60)
-
-def update_high_scores(teleportations, distances, temps):
-    global flag
-    global meilleurNombreTeleportations
-    global meilleurTemps
-    if flag is 0:
-        if meilleurNombreTeleportations is -1:
-            meilleurNombreTeleportations = teleportations
-            return True
-        elif teleportations < meilleurNombreTeleportations:
-                meilleurNombreTeleportations = teleportations
-                return True
-    elif flag is 1:
-        if meilleurTemps is -1:
-            meilleurTemps = temps
-            return True
-        elif temps < meilleurTemps:
-                meilleurTemps = temps
-                return True
-
-    return False
-
-
-def envoyer_fourmis(teleportations, distances, temps, chemin):
-    global essaisRestants
-    global essaisMax
-    global meilleurChemin
-
-    # Premier lancement
-    if temps is 0:
-        return True
-
-    essai = update_high_scores(teleportations, distances, temps)
-    if essai:
-        essaisRestants = essaisMax
-        meilleurChemin = list(chemin)
-        return True
-    elif essaisRestants <= 0:
         return False
-    else:
-        essaisRestants -= 1
-        return True
 
-"""        """
-""" START  """
-"""        """
+def isShorter(currAnt):
+    if bestAnt.longTravel == 0 or bestAnt.longTravel > currAnt.longTravel:
+        return True
+    else:
+        return False
+
+def hasBestValue(currAnt):
+    #pourcentage d'évolution
+    deltaTime = (bestAnt.durationTravel - currAnt.durationTravel)/currAnt.durationTravel * 100
+    deltaLong = (bestAnt.longTravel - currAnt.longTravel)/currAnt.longTravel * 100
+    deltaTele = (bestAnt.nbrTeleportation - currAnt.nbrTeleportation)/currAnt.durationTravel * 100
+
+    #si on constate une evolution globale des indicateurs, alors le rapport q/p est meilleur, sinon non
+    if (deltaLong+deltaTime+deltaTele) > 0:
+        return True
+    else:
+        return False
 
 while (timeToVisit < 15 or timeToVisit > 60) :
     try:
@@ -100,71 +42,31 @@ while (timeToVisit < 15 or timeToVisit > 60) :
         pass
 #tempsVisite = int(tempsVisite)
 
-ant1 = ant.Ant()
-ant1.generateTravel(timeToVisit)
-
 flag = -1
-while flag < 0 or flag > 1:
+while flag < 0 or flag > 2:
     for oneflag in range(len(arrets)):
         print str(oneflag+1) + ": " + arrets[oneflag]
     try:
         flag = int(raw_input('Choisissez votre systeme d\'arret: ')) -1
     except (ValueError, TypeError) as e:
         pass
-    if flag is 2:
-        print "Ce systeme n\'est pas encore implémenté !"
 
-tempsTotal = 0
-nbrTeleportation = 0
-distanceParcourue = 0
-etapesRealisees = []
 
 fourmiNbr = 0
-while envoyer_fourmis(nbrTeleportation, distanceParcourue, tempsTotal, etapesRealisees):
-
-    etapesRealisees = []
-    tempsTotal = 0
-    nbrTeleportation = 0
-    distanceParcourue = 0
-
-    #startPoint = get_random_point()
-    startPoint = 0
-    nouvelle_etape(startPoint)
-
-    etapeCourante = startPoint
-    stop = False
-    while True:
-        if len(etapesRealisees) is not len(places):
-            prochaine_etape = get_random_point()
-        else:
-            prochaine_etape = startPoint
-            stop = True
-        if not better_teleport(etapeCourante, prochaine_etape):
-            distanceParcourue += distances[etapeCourante][prochaine_etape]
-        else:
-            nbrTeleportation += 1
-
-        tempsTotal += calcul_temps_parcours(etapeCourante, prochaine_etape)
-        nouvelle_etape(prochaine_etape)
-        etapeCourante = prochaine_etape
-
-        if stop:
-            break
-
-    #print "Distance parcourue: " + str(distanceParcourue) + " metres"
-    #print "Nombre de teleportations: " + str(nbrTeleportation)
-    #print "Temps total: " + str(tempsTotal) + " minutes"
+while(essaisRestants > 0):
+    anyAnt = ant.Ant()
     fourmiNbr += 1
+    essaisRestants -= 1
+    anyAnt.generateTravel(timeToVisit)
     print "Fourmi n°" + str(fourmiNbr)
 
-print "--------------------------------------------------------"
-# print "Plus petite distance parcourue: " + str(meilleureDistance) + " metres"
-if flag is 0:
-    print "Plus petit nombre de teleportations: " + str(meilleurNombreTeleportations)
-elif flag is 1:
-    print "Temps le plus court : " + str(meilleurTemps) + " minutes"
+    if (flag is 0 and isFaster(anyAnt)) or (flag is 1 and isShorter(anyAnt)) or (flag is 2 and hasBestValue(anyAnt)):
+        bestAnt = anyAnt
+        essaisRestants = essaisMax
 
-print "Meilleur chemin: "
-print meilleurChemin
-for etape in meilleurChemin:
-    print " --> " + str(etape) + ":" + places[etape],
+    #décrémente les hormones
+    decrementAll()
+
+
+print "--------------------------------------------------------"
+bestAnt.display()

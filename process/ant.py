@@ -51,6 +51,7 @@ class Ant:
         #actualisation des compteurs
         #temps + prix
         self.durationTravel += timeToVisit
+
         if isBetterWithTeleportation(self.currPosition, newPosition):
             self.durationTravel += getTeleportationTime()
             self.nbrTeleportation += 1
@@ -75,8 +76,13 @@ class Ant:
     def generateTravel(self, timeToVisit):
         while self.endTravel == False:
             self.goToNextPosition(timeToVisit)
-            print("CurrPosition "+str(self.currPosition))
-            print("visitedPlaces "+str(self.visitedPlaces))
-            print("placesStillToVisit "+str(self.placesStillToVisit))
 
+    def display(self):
+        print("Fourmi :")
+        print("Durée du voyage (mins): "+str(self.durationTravel))
+        print("Longueur du voyage (mètres): "+str(self.longTravel))
+        print("Nombre de téléportation: "+str(self.nbrTeleportation))
+        print("Etapes du voyage:")
+        for etape in self.visitedPlaces:
+            print("     ->"+places[etape])
 

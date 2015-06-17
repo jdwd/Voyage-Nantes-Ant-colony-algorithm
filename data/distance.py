@@ -50,6 +50,7 @@ def getValeursPonderees(indice, elements):
 def getElementPondere(indice, value, elements):
     lieux = distances[indice]
     i = 0
+    j = 0
     ponderation = 0.0
     while i < len(elements) and (ponderation < value):
         j = sorted(elements)[i]
@@ -60,7 +61,7 @@ def getElementPondere(indice, value, elements):
 
 def randomPondereNoeud(indice, elements):
 
-    randomNumber =  random.randrange(0, getValeursPonderees(indice, elements), 1)
+    randomNumber = random.random() * getValeursPonderees(indice, elements)
 
     #valeur a approcher : valeur pondérée totale moins par un nombre aléatoire
     #total pondéré
