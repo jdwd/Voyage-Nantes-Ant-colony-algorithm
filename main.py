@@ -5,7 +5,7 @@ from data.place import places
 from process import ant
 
 timeToVisit = 0
-essaisMax = 10000 #1000000
+essaisMax = 100000 #1000000
 essaisRestants = essaisMax
 bestAnt = ant.Ant()
 arrets = ["Voyage le plus rapide","Voyage le plus court","Voyage avec le meilleur rapport qualite/prix"]
